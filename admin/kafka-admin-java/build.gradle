@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group 'com.mahfooz.kafka'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'org.slf4j:slf4j-log4j12:1.7.30'
+    implementation 'org.apache.kafka:kafka-clients:2.7.0'
+    testImplementation 'org.mockito:mockito-core:3.2.4'
+    testImplementation 'org.apache.kafka:kafka-clients:2.7.0:test'
+
+}
+
+test {
+    useJUnitPlatform()
+}

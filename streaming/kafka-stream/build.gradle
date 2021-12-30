@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'com.mahfooz.kafka'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.kafka:kafka-streams:2.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'org.slf4j:slf4j-log4j12:1.7.30'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task runDSL(type: JavaExec) {
+    main('com.example.DslExample')
+    classpath sourceSets.main.runtimeClasspath
+}
+
+task runProcessorAPI(type: JavaExec) {
+    main ('com.example.ProcessorApiExample')
+    classpath sourceSets.main.runtimeClasspath
+}
