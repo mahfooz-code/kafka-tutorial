@@ -1,3 +1,7 @@
+#   In case of docker
+    
+    
+    
 #   Kafka console producer
     kafka-console-producer \
         --bootstrap-server localhost:9092 \
