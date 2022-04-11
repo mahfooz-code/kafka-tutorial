@@ -2,7 +2,7 @@
     
     
     
-#   Kafka console producer
+#   Producing the message with key and value using kafka console producer
     kafka-console-producer \
         --bootstrap-server localhost:9092 \
         --property key.separator=, \

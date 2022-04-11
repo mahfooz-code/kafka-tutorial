@@ -43,4 +43,11 @@ public class TopicCreator {
             admin.incrementalAlterConfigs(alterConf).all().get();
         }
     }
+
+    public void createTopic(String topicName,int numberOfPartitions)
+            throws ExecutionException, InterruptedException {
+        Collection<NewTopic> topics = new ArrayList<>();
+        topics.add(new NewTopic(topicName, numberOfPartitions, (short) 1));
+        admin.createTopics(topics);
+    }
 }

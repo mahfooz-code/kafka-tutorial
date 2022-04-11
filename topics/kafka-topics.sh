@@ -1,3 +1,5 @@
+# Creating topic in kafka
+
 kafka-topics \
     --bootstrap-server localhost:9092 \
     --create \
