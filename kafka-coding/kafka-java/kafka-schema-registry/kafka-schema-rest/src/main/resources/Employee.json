@@ -1,0 +1,25 @@
+{
+  "schema": {
+    "namespace": "com.mahfooz.kafka.model",
+    "type": "record",
+    "name": "Employee",
+    "fields": [
+      {
+        "name": "fName",
+        "type": "string"
+      },
+      {
+        "name": "lName",
+        "type": "string"
+      },
+      {
+        "name": "age",
+        "type": "int"
+      },
+      {
+        "name": "phoneNumber",
+        "type": "string"
+      }
+    ]
+  }
+}

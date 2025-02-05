@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mahfooz.kafka</groupId>
+
+    <version>1.0</version>
+    <modules>
+        <module>kafka-producer-partition</module>
+        <module>kafka-producer-record</module>
+        <module>kafka-producer-mode</module>
+        <module>kafka-producer-serde</module>
+        <module>kafka-producer-schema-registry</module>
+        <module>kafka-producer-acknowledge</module>
+        <module>kafka-producer-config</module>
+        <module>kafka-producer-console</module>
+        <module>kafka-producer-memory</module>
+        <module>kafka-producer-timeout</module>
+        <module>kafka-producer-test</module>
+        <module>kafka-producer-compress</module>
+        <module>kafka-producer-util</module>
+        <module>kafka-producer-serde/kafka-kryo-serde</module>
+        <module>kafka-producer-processing</module>
+    </modules>
+    <artifactId>kafka-producer</artifactId>
+    <name>kafka-producer</name>
+    <packaging>pom</packaging>
+    <properties>
+        <kafka.version>2.2.1-cdh6.3.3</kafka.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.mahfooz.kafka</groupId>
+            <artifactId>kafka-model-object</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_2.11</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+    </dependencies>
+</project>

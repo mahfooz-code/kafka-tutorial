@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mahfooz.kafka2</groupId>
+    <artifactId>ksql-db</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <modules>
+        <module>ksql-db-setup</module>
+        <module>ksqldb-cli</module>
+        <module>ksqldb-server</module>
+        <module>ksqldb-stream</module>
+        <module>ksqldb-mview</module>
+        <module>ksqldb-client</module>
+        <module>ksqldb-etl</module>
+        <module>ksqldb-event</module>
+        <module>ksqldb-embedded-connect</module>
+
+    </modules>
+
+</project>

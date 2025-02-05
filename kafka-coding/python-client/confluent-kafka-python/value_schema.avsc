@@ -1,0 +1,30 @@
+{
+  "type": "record",
+  "name": "Value",
+  "namespace": "com.example",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "email",
+      "type": "string"
+    },
+    {
+      "name": "is_active",
+      "type": "boolean"
+    },
+    {
+      "name": "created_at",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    }
+  ]
+}

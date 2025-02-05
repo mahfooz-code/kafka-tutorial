@@ -1,0 +1,6 @@
+[flake8]
+extend-ignore = E203
+max-line-length = 128
+exclude = tests,.tox,.venv,__pycache__,.env
+max-complexity = 10
+builtins = dbutils,spark,display,displayHTML

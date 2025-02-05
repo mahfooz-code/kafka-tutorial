@@ -1,0 +1,1 @@
+docker exec -it ksqldb-server ksql http://mtmdevhdoped01:38088

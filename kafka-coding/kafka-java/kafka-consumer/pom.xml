@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mahfooz.kafka2</groupId>
+    <artifactId>kafka-consumer</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <modules>
+        <module>kafka-consumer-serde</module>
+        <module>kafka-consumer-group</module>
+        <module>kafka-consumer-partition</module>
+        <module>kafka-consumer-listener</module>
+        <module>kafka-consumer-record</module>
+        <module>kafka-consumer-thread</module>
+        <module>spark-consumer-config</module>
+        <module>kafka-consumer-console</module>
+        <module>kafka-consumer-offset</module>
+        <module>kafka-consumer-processing</module>
+        <module>kafka-consumer-util</module>
+        <module>kafka-consumer-assignment</module>
+        <module>kafka-consumer-practices</module>
+        <module>kafka-consumer-testing</module>
+        <module>kafka-consumer-modes</module>
+        <module>kafka-consumer-schema-registry</module>
+    </modules>
+    <name>kafka-consumer</name>
+
+    <repositories>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <kafka.version>2.2.1-cdh6.3.3</kafka.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.mahfooz.kafka</groupId>
+            <artifactId>kafka-model-object</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_2.11</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20200518</version>
+        </dependency>
+
+
+    </dependencies>
+
+</project>

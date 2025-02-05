@@ -1,0 +1,39 @@
+[project]
+name = "confluent-kafka-python"
+version = "0.1.0"
+description = "Confluent kafka python"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["confluent-kafka[avro]>=2.6.0"]
+
+[dependency-groups]
+dev = [
+    "black[jupyter]>=24.10.0",
+    "flake8>=7.1.1",
+    "pytest-kafka>=0.8.1",
+    "pytest-sugar>=1.0.0",
+    "ruff>=0.9.1",
+    "pandas-stubs >=2.2.2.240909",
+    "taskipy >= 1.14.1",
+    "isort  >= 5.13.2",
+    "safety >= 2.3.5",
+    "radon >= 6.0.1",
+    "bandit >= 1.8.0",
+    "ruff >= 0.9.1",
+    "mypy>=1.14.1",
+    "types-pyyaml>=6.0.12.20241230",
+    "types-requests>=2.32.0.20241016",
+]
+
+[tool.taskipy.tasks]
+import = "uv run isort  src tests"
+test = "uv run pytest -vv tests"
+lint = "uv run flake8 -v src tests"
+type_check = "uv run mypy src tests"
+format = "uv run ruff format src tests"
+format_check = "uv run ruff check src tests"
+quality = "task import && task format && task format_check && task lint && task type_check && task test"
+bandit = "uv run bandit -r src"
+safety = "uv run safety check --policy-file .safety-policy.yml"
+secure = "task bandit && task safety"
+build = "uv build"

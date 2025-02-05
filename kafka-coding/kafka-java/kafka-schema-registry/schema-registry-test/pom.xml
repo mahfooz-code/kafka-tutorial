@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mahfooz.kafka2</groupId>
+    <artifactId>schema-registry-test</artifactId>
+    <version>1.0</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <confluent-platform.version>5.5.1</confluent-platform.version>
+        <avro-maven-plugin.version>1.9.2</avro-maven-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+        <protobuf-maven.version>0.6.1</protobuf-maven.version>
+        <schema-registry-url>http://mtmdevhdoped01:8081</schema-registry-url>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <name>confluent</name>
+            <url>https://packages.confluent.io/maven</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>confluent</id>
+            <name>confluent</name>
+            <url>https://packages.confluent.io/maven</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_2.12</artifactId>
+            <version>${confluent-platform.version}-ccs</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>${confluent-platform.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-protobuf-serializer</artifactId>
+            <version>${confluent-platform.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-json-schema-serializer</artifactId>
+            <version>${confluent-platform.version}</version>
+        </dependency>
+
+        <!--logging-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.0-alpha1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>2.0.0-alpha1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xolstice.maven.plugins</groupId>
+            <artifactId>protobuf-maven-plugin</artifactId>
+            <version>0.6.1</version>
+            <type>maven-plugin</type>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+            </plugin>
+
+            <!--schema registry plugin -->
+            <plugin>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-schema-registry-maven-plugin</artifactId>
+                <version>${confluent-platform.version}</version>
+                <configuration>
+                    <schemaRegistryUrls>
+                        <param>${schema-registry-url}</param>
+                    </schemaRegistryUrls>
+                    <outputDirectory>schemas</outputDirectory>
+                    <subjects>
+                        <avro-result>src/main/avro/result.avsc</avro-result>
+                        <testavro-value>src/main/avro/schemas.avsc</testavro-value>
+                        <result.proto>src/main/proto/result.proto</result.proto>
+                        <testproto-value>src/main/proto/test.proto</testproto-value>
+                        <result.json>src/main/json/result.json</result.json>
+                        <testjson-value>src/main/json/jsontest.json</testjson-value>
+                    </subjects>
+                    <schemaTypes>
+                        <avro-result>AVRO</avro-result>
+                        <testavro-value>AVRO</testavro-value>
+                        <result.proto>PROTOBUF</result.proto>
+                        <testproto-value>PROTOBUF</testproto-value>
+                        <result.json>JSON</result.json>
+                        <testjson-value>JSON</testjson-value>
+                    </schemaTypes>
+                    <references>
+                        <testavro-value>
+                            <reference>
+                                <name>com.mahfooz.schema.registry.avro.Result</name>
+                                <subject>avro-result</subject>
+                                <version>1</version>
+                            </reference>
+                        </testavro-value>
+                        <testproto-value>
+                            <reference>
+                                <name>result.proto</name>
+                                <subject>result.proto</subject>
+                                <version>1</version>
+                            </reference>
+                        </testproto-value>
+                        <testjson-value>
+                            <reference>
+                                <name>result.json</name>
+                                <subject>result.json</subject>
+                                <version>1</version>
+                            </reference>
+                        </testjson-value>
+                    </references>
+                </configuration>
+                <goals>
+                    <goal>register</goal>
+                </goals>
+            </plugin>
+
+            <!-- avro compiling plugin -->
+            <plugin>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro-maven-plugin</artifactId>
+                <version>${avro-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>schema</goal>
+                        </goals>
+                        <configuration>
+                            <imports>
+                                <import>
+                                    ${project.basedir}/src/main/avro/result.avsc
+                                </import>
+                            </imports>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- protobuf generator plugin -->
+
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>${protobuf-maven.version}</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <protocExecutable>protoc</protocExecutable>
+                </configuration>
+            </plugin>
+
+            <!-- json to schema generator -->
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>1.0.2</version>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/json</sourceDirectory>
+                    <targetPackage>com.mahfooz.schema.registry.json</targetPackage>
+                    <includeJsr303Annotations>true</includeJsr303Annotations>
+                    <useLongIntegers>true</useLongIntegers>
+                    <annotationStyle>jackson2</annotationStyle>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <mainClass>com.mahfooz.schema.registry.App</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.mahfooz.schema.registry.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
