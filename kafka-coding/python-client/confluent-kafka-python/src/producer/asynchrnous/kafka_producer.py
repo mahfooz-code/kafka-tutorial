@@ -1,18 +1,16 @@
-from random import choice
+from secrets import choice
 
 from confluent_kafka import Producer
 
+
+def set_producer_configs():
+    config_dict = {}
+    config_dict["bootstrap.servers"] = "localhost:19092,localhost:29092,localhost:39092"
+    return config_dict
+
+
 if __name__ == "__main__":
-    config = {
-        # User-specific properties that you must set
-        "bootstrap.servers": "localhost:19092,localhost:29092",
-        # 'sasl.username':     '<CLUSTER API KEY>',
-        # 'sasl.password':     '<CLUSTER API SECRET>',
-        # Fixed properties
-        # 'security.protocol': 'SASL_SSL',
-        # 'sasl.mechanisms':   'PLAIN',
-        # 'acks':              'all'
-    }
+    config = set_producer_configs()
 
     # Create Producer instance
     producer = Producer(config)
@@ -45,5 +43,5 @@ if __name__ == "__main__":
         count += 1
 
     # Block until the messages are sent.
-    producer.poll(10000)
+    producer.poll(0)
     producer.flush()

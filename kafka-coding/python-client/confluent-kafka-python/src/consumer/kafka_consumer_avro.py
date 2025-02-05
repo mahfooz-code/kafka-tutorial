@@ -1,9 +1,9 @@
 from confluent_kafka.avro import AvroConsumer
 
-schema_registry_url = ""
+schema_registry_url = "http://localhost:8081"
 
 consumer_conf = {
-    "bootstrap.servers": "localhost:9092",
+    "bootstrap.servers": "localhost:19092,localhost:29092",
     "group.id": "python-avro-consumer-group",
     "schema.registry.url": schema_registry_url,
     "auto.offset.reset": "earliest",

@@ -4,7 +4,7 @@ from confluent_kafka import Consumer, TopicPartition
 def main():
     # Configuration for the consumer
     consumer_conf = {
-        "bootstrap.servers": "localhost:19092,localhost:29092",
+        "bootstrap.servers": "localhost:19092,localhost:29092,localhost:39092",
         "group.id": "python-consumer-group",
         "enable.auto.commit": False,  # Disable auto commit to manage offsets manually
         "auto.offset.reset": "earliest",

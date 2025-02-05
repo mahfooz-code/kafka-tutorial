@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     # Send Avro messages
     avro_producer.produce(
-        topic="registry-topic",
+        topic="avro-topic",
         key={"id": 1},
         value={
             "name": "example",

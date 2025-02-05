@@ -58,4 +58,9 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+.venv/
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
 

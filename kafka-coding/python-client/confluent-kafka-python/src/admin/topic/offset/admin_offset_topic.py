@@ -1,9 +1,8 @@
+from confluent_kafka import IsolationLevel, KafkaException, TopicPartition
 from confluent_kafka.admin import AdminClient, OffsetSpec
-from confluent_kafka import IsolationLevel, TopicPartition, KafkaException
 
 
 def fetch_offset(admin_client, topic):
-
     # Fetch metadata
     metadata = admin_client.list_topics(timeout=10)
 
@@ -57,14 +56,22 @@ def fetch_offset(admin_client, topic):
 
 
 def list_offsets(admin, args: list[str]):
-    topic_partition_offsets = {}
     if len(args) == 0:
         raise ValueError(
             "Invalid number of arguments for list offsets, expected at least 1, got 0"
         )
-    i = 1
-    partition_i = 1
     isolation_level = IsolationLevel[args[0]]
+    topic_partition_offsets = parse_args(args[1:])
+    futmap = admin.list_offsets(
+        topic_partition_offsets, isolation_level=isolation_level, request_timeout=30
+    )
+    process_futures(futmap)
+
+
+def parse_args(args: list[str]) -> dict:
+    topic_partition_offsets = {}
+    i = 0
+    partition_i = 1
     while i < len(args):
         if i + 3 > len(args):
             raise ValueError(
@@ -73,36 +80,35 @@ def list_offsets(admin, args: list[str]):
             )
         topic = args[i]
         partition = int(args[i + 1])
+        offset_spec = get_offset_spec(args, i, partition_i)
         topic_partition = TopicPartition(topic, partition)
-
-        if "EARLIEST" == args[i + 2]:
-            offset_spec = OffsetSpec.earliest()
-
-        elif "LATEST" == args[i + 2]:
-            offset_spec = OffsetSpec.latest()
-
-        elif "MAX_TIMESTAMP" == args[i + 2]:
-            offset_spec = OffsetSpec.max_timestamp()
-
-        elif "TIMESTAMP" == args[i + 2]:
-            if i + 4 > len(args):
-                raise ValueError(
-                    f"Invalid number of arguments for list offsets, partition {partition_i}, expected 4"
-                    + f", got {len(args) - i}"
-                )
-            offset_spec = OffsetSpec.for_timestamp(int(args[i + 3]))
-            i += 1
-        else:
-            raise ValueError(
-                "Invalid OffsetSpec, must be EARLIEST, LATEST, MAX_TIMESTAMP or TIMESTAMP"
-            )
         topic_partition_offsets[topic_partition] = offset_spec
-        i = i + 3
+        i = i + 3 if offset_spec != OffsetSpec.for_timestamp else i + 4
         partition_i += 1
+    return topic_partition_offsets
 
-    futmap = admin.list_offsets(
-        topic_partition_offsets, isolation_level=isolation_level, request_timeout=30
-    )
+
+def get_offset_spec(args: list[str], i: int, partition_i: int) -> OffsetSpec:
+    if "EARLIEST" == args[i + 2]:
+        return OffsetSpec.earliest()
+    elif "LATEST" == args[i + 2]:
+        return OffsetSpec.latest()
+    elif "MAX_TIMESTAMP" == args[i + 2]:
+        return OffsetSpec.max_timestamp()
+    elif "TIMESTAMP" == args[i + 2]:
+        if i + 4 > len(args):
+            raise ValueError(
+                f"Invalid number of arguments for list offsets, partition {partition_i}, expected 4"
+                + f", got {len(args) - i}"
+            )
+        return OffsetSpec.for_timestamp(int(args[i + 3]))
+    else:
+        raise ValueError(
+            "Invalid OffsetSpec, must be EARLIEST, LATEST, MAX_TIMESTAMP or TIMESTAMP"
+        )
+
+
+def process_futures(futmap: dict):
     for partition, fut in futmap.items():
         try:
             result = fut.result()
@@ -123,9 +129,10 @@ def list_offsets(admin, args: list[str]):
 
 
 def main():
-
     # Configuration for the admin client
-    admin_conf = {"bootstrap.servers": "localhost:19092,localhost:29092"}
+    admin_conf = {
+        "bootstrap.servers": "localhost:19092,localhost:29092,localhost:39092"
+    }
     admin_client = AdminClient(admin_conf)
 
     # Topic name

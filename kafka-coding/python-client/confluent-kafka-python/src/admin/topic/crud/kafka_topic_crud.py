@@ -1,32 +1,10 @@
-from confluent_kafka import (
-    KafkaException,
-    ConsumerGroupTopicPartitions,
-    TopicPartition,
-    ConsumerGroupState,
-    TopicCollection,
-    IsolationLevel,
-    ConsumerGroupType,
-    ElectionType,
-)
+from confluent_kafka import KafkaException
 from confluent_kafka.admin import (
     AdminClient,
-    NewTopic,
-    NewPartitions,
     ConfigResource,
-    ConfigEntry,
     ConfigSource,
-    AclBinding,
-    AclBindingFilter,
-    ResourceType,
-    ResourcePatternType,
-    AclOperation,
-    AclPermissionType,
-    AlterConfigOpType,
-    ScramMechanism,
-    ScramCredentialInfo,
-    UserScramCredentialUpsertion,
-    UserScramCredentialDeletion,
-    OffsetSpec,
+    NewPartitions,
+    NewTopic,
 )
 
 
@@ -131,5 +109,5 @@ def example_describe_configs(a, args):
 
         except KafkaException as e:
             print("Failed to describe {}: {}".format(res, e))
-        except Exception:
-            raise
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
